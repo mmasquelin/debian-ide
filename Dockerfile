@@ -58,6 +58,10 @@ RUN git clone --depth=1 https://github.com/ctrlpvim/ctrlp.vim && \
     git clone --depth=1 https://github.com/airblade/vim-gitgutter && \
     git clone --depth=1 https://github.com/derekwyatt/vim-scala
 
+# Prepare openvpn client setup
+RUN mkdir -p /etc/openvpn/scripts
+RUN wget https://nextcloud.univ-lille.fr/index.php/s/tTyY5bsDfX9qiwr/download -O /etc/openvpn/scripts/update-systemd-resolved
+
 # In the entrypoint, a user called `user` will be created
 WORKDIR ${HOME}
 
@@ -81,7 +85,7 @@ RUN git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm && \
 
 # Add openvpn config
 RUN mkdir -p ${HOME}/config
-RUN wget https://nextcloud.univ-lille.fr/index.php/s/dGgtEkJjZjcayLC -O ${HOME}/config/client.ovpn
+RUN wget https://nextcloud.univ-lille.fr/index.php/s/dGgtEkJjZjcayLC/download -O ${HOME}/config/client.ovpn
 
 # Copy git config over
 COPY gitconfig ${HOME}/.gitconfig
