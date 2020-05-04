@@ -79,6 +79,10 @@ COPY tmux.conf ${HOME}/.tmux.conf
 RUN git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm && \
     ${HOME}/.tmux/plugins/tpm/bin/install_plugins
 
+# Add openvpn config
+RUN mkdir -p ${HOME}/config
+RUN wget https://nextcloud.univ-lille.fr/index.php/s/dGgtEkJjZjcayLC -O ${HOME}/config/client.ovpn
+
 # Copy git config over
 COPY gitconfig ${HOME}/.gitconfig
 
