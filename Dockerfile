@@ -72,12 +72,12 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zs
 # Copy initial zshrc config
 COPY zshrc ${HOME}/.zshrc
 
+# Copy initial tmux config
+COPY tmux.conf ${HOME}/.tmux.conf
+
 # Install tmux
 RUN git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm && \
     ${HOME}/.tmux/plugins/tpm/bin/install_plugins
-
-# Copy initial tmux config
-COPY tmux.conf ${HOME}/.tmux.conf
 
 # Copy git config over
 COPY gitconfig ${HOME}/.gitconfig
