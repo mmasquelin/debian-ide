@@ -1,0 +1,14 @@
+[user]
+[push]
+    default = current
+[alias]
+    a = add -p
+    doki = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Cblue - %cn %Creset' --abbrev-commit --date=relative
+    ds = diff --staged
+    lola = log --graph --decorate --oneline --all
+    wc = whatchanged -p
+[color]
+    ui = auto
+[core]
+    editor = nvim
+    hooksPath = ./.git/hooks

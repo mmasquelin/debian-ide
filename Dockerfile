@@ -17,9 +17,9 @@ RUN sed -i 's/^mesg n/tty -s \&\& mesg n/g' /root/.profile
 RUN set -eux; \
     apt-get update -qq -y \
     && apt-get upgrade -y -o Dpkg::Options::="--force-confold" \
-    && apt-get install -qq -y --no-install-recommends bsdmainutils build-essential \
-       ca-certificates curl dnsutils docker.io gcc git gnupg2 jq less libc-dev login make man neovim openssh-client \ 
-       python3-minimal python3-pip python3-setuptools tmux tmux-plugin-manager uidmap wget whois zsh \
+    && apt-get install -qq -y --no-install-recommends bash bsdmainutils build-essential \
+       ca-certificates curl dnsutils docker.io gcc git gnupg2 iptables jq less libc-dev login make man neovim openssh-client openvpn \ 
+       python3-minimal python3-pip python3-setuptools tmux tmux-plugin-manager tini tzdata uidmap weechat wget whois zsh \
     && apt-get clean \
     && rm -fr /var/lib/apt/lists/*
 
@@ -42,6 +42,9 @@ RUN  set -eux; \
 # Configure text editor - vim!
 RUN curl -fLo ${HOME}/.config/nvim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+# Initial vimrc config
+COPY vimrc ${HOME}/.config/nvim/init.vim
+
 # Clone the git repos of Vim plugins
 WORKDIR ${HOME}/.config/nvim/plugged/
 RUN git clone --depth=1 https://github.com/ctrlpvim/ctrlp.vim && \
@@ -63,7 +66,25 @@ ENV SHELL /bin/zsh
 
 # Install oh-my-zsh
 RUN wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | zsh || true
+RUN wget https://gist.githubusercontent.com/xfanwu/18fd7c24360c68bab884/raw/f09340ac2b0ca790b6059695de0873da8ca0c5e5/xxf.zsh-theme -O ${HOME}/.oh-my-zsh/custom/themes/xxf.zsh-theme
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/plugins/zsh-autosuggestions
 
+# Copy initial zshrc config
+COPY zshrc ${HOME}/.zshrc
+
+# Install tmux
+RUN git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm && \
+    ${HOME}/.tmux/plugins/tpm/bin/install_plugins
+
+# Copy initial tmux config
+COPY tmux.conf ${HOME}/.tmux.conf
+
+# Copy git config over
+COPY gitconfig ${HOME}/.gitconfig
+
+# Entrypoint script creates a user called `user` and `chown`s everything
+COPY entrypoint.sh /bin/entrypoint.sh
+
 # Default command to run
-CMD ["tail", "-f", "/dev/null"]
+# CMD ["tail", "-f", "/dev/null"]
+CMD ["/bin/entrypoint.sh"]
