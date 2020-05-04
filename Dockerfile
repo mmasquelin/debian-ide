@@ -19,7 +19,7 @@ RUN set -eux; \
     && apt-get upgrade -y -o Dpkg::Options::="--force-confold" \
     && apt-get install -qq -y --no-install-recommends bsdmainutils build-essential \
        ca-certificates curl dnsutils docker.io gcc git gnupg2 jq less libc-dev login make man neovim openssh-client \ 
-       python3-minimal python3-pip tmux tmux-plugin-manager uidmap wget whois zsh \
+       python3-minimal python3-pip python3-setuptools tmux tmux-plugin-manager uidmap wget whois zsh \
     && apt-get clean \
     && rm -fr /var/lib/apt/lists/*
 
