@@ -18,8 +18,8 @@ RUN set -eux; \
     apt-get update -qq -y \
     && apt-get upgrade -y -o Dpkg::Options::="--force-confold" \
     && apt-get install -qq -y --no-install-recommends bash bsdmainutils build-essential \
-       ca-certificates curl dnsutils docker.io gcc git gnupg2 iptables jq less libc-dev login make man neovim openssh-client openvpn \ 
-       python3-minimal python3-pip python3-setuptools tmux tmux-plugin-manager tini tzdata uidmap weechat wget whois zsh \
+       ca-certificates curl dnsutils docker.io gcc git gnupg2 iptables iputils-ping jq less libc-dev login make man neovim net-tools openssh-client openvpn procps \ 
+       python3-minimal python3-pip python3-setuptools screen tmux tmux-plugin-manager tini tzdata uidmap weechat wget whois zsh \
     && apt-get clean \
     && rm -fr /var/lib/apt/lists/*
 
@@ -61,6 +61,7 @@ RUN git clone --depth=1 https://github.com/ctrlpvim/ctrlp.vim && \
 # Prepare openvpn client setup
 RUN mkdir -p /etc/openvpn/scripts
 RUN wget https://nextcloud.univ-lille.fr/index.php/s/tTyY5bsDfX9qiwr/download -O /etc/openvpn/scripts/update-systemd-resolved
+RUN chmod +x /etc/openvpn/scripts/update-systemd-resolved
 
 # In the entrypoint, a user called `user` will be created
 WORKDIR ${HOME}
